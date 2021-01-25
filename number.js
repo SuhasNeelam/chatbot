@@ -9,6 +9,13 @@ const numberSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  ticketNo: {
+    type: String,
+    unique: true
+  },
+  complaintStatus: {
+    type: String,
+  }
 })
 
 module.exports = mongoose.model('number', numberSchema)
