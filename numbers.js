@@ -4,7 +4,7 @@ const Number = require('./number')
 
 router.get('/', async (req, res) => {
   try {
-      console.log("get")
+    console.log("get")
     const numbers = await Number.find()
     res.json(numbers)
   } catch (err) {
