@@ -15,6 +15,9 @@ const numberSchema = new mongoose.Schema({
   },
   complaintStatus: {
     type: String,
+  },
+  issue: {
+    type: String
   }
 })
 
