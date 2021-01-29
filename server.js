@@ -3,6 +3,8 @@ const app = express()
 const mongoose = require('mongoose')
 const { WebhookClient, Payload } = require("dialogflow-fulfillment");
 const Number = require('./number')
+const axios = require('axios')
+const uri = `https://ecfdb0531e51.ngrok.io`
 
 mongoose.connect('mongodb://localhost:27017/numbers', { useNewUrlParser: true,useUnifiedTopology: true })
 const db = mongoose.connection
@@ -28,9 +30,8 @@ app.post("/", express.json(), (req, res) => {
 
     intentMap.set("ComplaintServiceNumber", (agent) => {
       let number = agent.parameters['phone-number']
-      let url = `https://0e073582366c.ngrok.io/numbers/${number}`
+      let url = `${uri}/numbers/${number}`
       function getUsername(url){
-        const axios = require('axios')
         return axios.get(url)
       }
       let bot_res = "default res"
@@ -43,8 +44,17 @@ app.post("/", express.json(), (req, res) => {
       .catch(err => {
         console.log("error occured")
         console.log(err)
-        bot_res = "Sorry, No user with the phone number. Thank You!"
-        agent.end(bot_res)
+        username = `defaultBAN${Math.floor(Math.random()*(999-100+1)+100)}`
+        let url1 = `${uri}/numbers`
+        axios.post(url1, {
+          username: username,
+          number: number
+        })
+        .then(function (response) {
+          // console.log(response);
+        })
+        bot_res = `New User created with your phone number with username ${username}! Please describe your issue!`
+        agent.add(bot_res)
       })
     })
 

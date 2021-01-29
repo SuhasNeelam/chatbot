@@ -29,10 +29,26 @@ router.post('/', async (req, res) => {
 router.get('/:id', getNumber, (req, res) => {
   res.json(res.number.username)
 })
+router.delete('/:id', deleteNumber, (req, res) => {
+  res.json(res.number.username)
+})
 
 async function getNumber(req, res, next) {
   try {
     number = await Number.findOne({number:req.params.id})
+    if (number == null) {
+      return res.status(404).json({ message: 'Cant find Number'})
+    }
+  } catch(err){
+    return res.status(500).json({ message: err.message })
+  }
+  
+  res.number = number
+  next()
+}
+async function deleteNumber(req, res, next) {
+  try {
+    number = await Number.deleteOne({number:req.params.id})
     if (number == null) {
       return res.status(404).json({ message: 'Cant find Number'})
     }
