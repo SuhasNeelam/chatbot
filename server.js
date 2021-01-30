@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const { WebhookClient, Payload } = require("dialogflow-fulfillment");
 const Number = require('./number')
 const axios = require('axios')
-const uri = `https://ecfdb0531e51.ngrok.io`
+const uri = `https://4bf7781b7bb6.ngrok.io`
 
 mongoose.connect('mongodb://localhost:27017/numbers', { useNewUrlParser: true,useUnifiedTopology: true })
 const db = mongoose.connection
@@ -14,15 +14,19 @@ db.once('open', () => console.log('connected to database'))
 app.use(express.json())
 
 const numbersRouter = require('./numbers')
-app.get('/',(req,res)=>{
-    res.send("We are Live")
-})
+
 app.use('/numbers', numbersRouter)
 
 app.listen(3000, () => console.log('server started'))
 
 let username = ""
 let issueDict
+
+app.get("/", (req, res) => {
+  res.sendFile(
+    "C:/Users/asus/OneDrive/Desktop/ChatBot/node/chatBot.html"
+  )
+})
 
 app.post("/", express.json(), (req, res) => {
     const agent = new WebhookClient({ request: req, response: res })
