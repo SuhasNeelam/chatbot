@@ -34,6 +34,10 @@ app.post("/", express.json(), (req, res) => {
 
     intentMap.set("ComplaintServiceNumber", (agent) => {
       let number = agent.parameters['phone-number']
+      if(number.length!=10){
+        agent.add(`Please enter a valid "Phone Number"!`)
+        return
+      }
       let url = `${uri}/numbers/${number}`
       function getUsername(url){
         return axios.get(url)
@@ -57,6 +61,7 @@ app.post("/", express.json(), (req, res) => {
         .then(function (response) {
           // console.log(response);
         })
+        .catch(err=>console.log(err))
         bot_res = `New User created with your phone number with username ${username}! Please describe your issue!`
         agent.add(bot_res)
       })
